@@ -15,19 +15,23 @@ of space.
 %post
     export ANDROID_SDK_TOOLS_REVISION="4333796"
     export ANDROID_SDK_BUILD_TOOLS_VERSION="28.0.2"
-    export ANDROID_NDK_VERSION="18"
+    export ANDROID_NDK_VERSION="19b"
     export DEBIAN_FRONTEND="noninteractive"
+    dpkg --add-architecture i386
     apt update && apt upgrade -yq
     apt install -yq --no-install-recommends \
-        build-essential asciidoc asciidoctor autoconf automake bison curl \
-        devscripts ed flex g++-multilib gawk gettext git gnome-common gnupg \
-        gtk-3-examples gtk-doc-tools gperf help2man intltool libexpat1-dev \
-        libgdk-pixbuf2.0-dev libgmp-dev libgtk-3-bin libglib2.0-dev libisl-dev \
-        libjpeg-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev \
-        libssl-dev libtool-bin lzip m4 openjdk-8-jdk-headless pkg-config \
-        python-pip python-setuptools python3.7 python3-docutils python3-pip \
-        python3-setuptools python3-sphinx ruby scons texinfo unzip xfonts-utils \
-        xmlto zip zlib1g-dev
+        asciidoc asciidoctor autoconf automake bison build-essential curl \
+        devscripts docbook-utils docbook-to-man ed flex g++-multilib gawk \
+        gettext git gnome-common gnupg gtk-3-examples gtk-doc-tools gperf \
+        help2man intltool jq libexpat1-dev libffi-dev libgc-dev libgdk-pixbuf2.0-dev \
+        libgmp-dev libgtk-3-bin libglib2.0-dev libisl-dev libjpeg-dev \
+        libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev \
+        libsigsegv-dev libssl-dev libtool-bin libunistring-dev lzip m4 \
+        openjdk-8-jdk-headless pax-utils pkg-config python-pip python3.7 \
+        python3-docutils python3-pip python3-setuptools python3-sphinx ruby \
+        scons texinfo unzip valac xfonts-utils xmlto zip zlib1g-dev
+    apt install -yq --no-install-recommends \
+        libssl-dev:i386 zlib1g-dev:i386
     apt install -yq --no-install-recommends \
         hexedit nano patchelf patchutils pax-utils silversearcher-ag
     curl --location --output micro-1.4.1.tar.gz \
@@ -41,6 +45,7 @@ of space.
     mv android-sdk /opt/
     echo y | /opt/android-sdk/tools/bin/sdkmanager "build-tools;${ANDROID_SDK_BUILD_TOOLS_VERSION}"
     echo y | /opt/android-sdk/tools/bin/sdkmanager "platforms;android-21"
+    echo y | /opt/android-sdk/tools/bin/sdkmanager "platforms;android-24"
     echo y | /opt/android-sdk/tools/bin/sdkmanager "platforms;android-27"
     curl --location --output ndk.zip \
         https://dl.google.com/android/repository/android-ndk-r${ANDROID_NDK_VERSION}-Linux-x86_64.zip
@@ -50,7 +55,7 @@ of space.
     mkdir /var/lib/termux-build && chmod 777 /var/lib/termux-build
     apt-get clean
     rm -rf /var/lib/apt/lists/*
-    rm -rf /opt/android-ndk/sources/cxx-stl/system
+    find /bin /etc /lib /lib32 /lib64 /libx32 /sbin /usr -type f -print0 | xargs -0 -r chmod a-w
 
 %runscript
     export ANDROID_HOME=/opt/android-sdk
