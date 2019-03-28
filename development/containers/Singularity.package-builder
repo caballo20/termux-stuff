@@ -29,7 +29,8 @@ of space.
         libsigsegv-dev libssl-dev libtool-bin libunistring-dev lzip m4 \
         openjdk-8-jdk-headless pax-utils pkg-config python-pip python3.7 \
         python3-docutils python3-pip python3-setuptools python3-sphinx ruby \
-        scons texinfo unzip valac xfonts-utils xmlto zip zlib1g-dev
+        scons texinfo unzip valac xfonts-utils xmlto zip zlib1g-dev python3-recommonmark \
+        llvm-7-tools
     apt install -yq --no-install-recommends \
         libssl-dev:i386 zlib1g-dev:i386
     apt install -yq --no-install-recommends \
